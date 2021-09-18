@@ -1,25 +1,26 @@
 using UnityEditor;
-using UnityEngine.UI;
-using static System.IO.Directory;
-using static System.IO.Path;
 using static UnityEditor.AssetDatabase;
-using static UnityEngine.Application;
 
 public static class ToolsMenu
 {
     [MenuItem("Tools/Setup/Create Default Folders")]
     public static void CreateDefaultFolders()
     {
-        CreateDirectories("_Project", "Scripts", "Art", "Scenes");
+        Folders.CreateDirectories("_Project", "Scripts", "Art", "Scenes");
         Refresh();
     }
 
-    public static void CreateDirectories(string root, params string[] dir)
-    {
-        var fullpath = Combine(dataPath, root);
-        foreach (var newDirectory in dir)
-        {
-            CreateDirectory(Combine(fullpath, newDirectory));
-        }
-    }
+    [MenuItem("Tools/Setup/Load New Manifest")]
+    static async void LoadNewManifest() =>
+        await Packages.ReplacePackagesFromGist("ae79e5e1faa93d17d9585f88e5e6c206");
+
+    [MenuItem("Tools/Setup/Packages/inputsystem")]
+    static void AddPostInputsystem() => Packages.InstallUnityPackage("inputsystem");
+    
+    [MenuItem("Tools/Setup/Packages/Post Processing")]
+    static void AddPostProcessing() => Packages.InstallUnityPackage("postprocessing");
+    
+    [MenuItem("Tools/Setup/Packages/Cinemachine")]
+    static void AddPostCinemachine() => Packages.InstallUnityPackage("cinemachine");
+
 }
